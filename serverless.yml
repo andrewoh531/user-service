@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: user-service # NOTE: update this with your service name
+service: user-service 
 
 # Use the serverless-webpack plugin to transpile ES6
 plugins:
@@ -64,11 +64,11 @@ provider:
 
 functions:
   hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
+    handler: src/functions/handler.hello
+    # events:
+    #   - http:
+    #       path: hello
+    #       method: get
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
