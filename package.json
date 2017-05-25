@@ -4,23 +4,31 @@
   "description": "A starter project for the Serverless Framework with ES7 support",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test mocha --recursive ./src/tests/ --compilers js:babel-core/register --opts ./src/tests/mocha.opts"
   },
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "babel-runtime": "^6.23.0",
+    "dynogels": "^8.0.0",
+    "dynogels-promisified": "^1.0.4",
+    "joi": "^10.5.0",
+    "node-uuid": "^1.4.8",
+    "source-map-support": "^0.4.14"
+  },
   "devDependencies": {
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-stage-3": "^6.24.1",
+    "chai": "^3.5.0",
+    "dynalite": "^1.2.0",
     "js-yaml": "^3.8.2",
+    "lambda-tester": "^2.8.1",
+    "mocha": "^3.4.1",
     "serverless-webpack": "^1.0.0-rc.4",
     "webpack": "^2.3.1",
     "webpack-node-externals": "^1.5.4"
-  },
-  "dependencies": {
-    "babel-runtime": "^6.23.0",
-    "source-map-support": "^0.4.14"
   }
 }

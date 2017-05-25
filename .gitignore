@@ -39,3 +39,5 @@ jspm_packages
 .envrc*
 .serverless
 .webpack
+
+dynalite/

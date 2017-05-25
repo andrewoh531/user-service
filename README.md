@@ -9,6 +9,6 @@ The following AWS resources are created as part of the `serverless deploy` comma
 Note that the default region is set to `ap-southeast-2`.
 
 ---
-# Credit - Serverless ES7 async/await
+## Credit - Serverless ES7 async/await
 
 This repository was generated via `https://github.com/AnomalyInnovations/serverless-es7` which provides the skeleton for a serverless configuration that supports ES7. Please reference the repository linked above for further information on setting up your own ES7 async/await generated framework.
