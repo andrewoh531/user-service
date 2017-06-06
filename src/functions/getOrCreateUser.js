@@ -1,5 +1,4 @@
 import uuid from 'node-uuid';
-
 import UserModel from '../libs/UserModel';
 
 function validateInput(payload) {
@@ -25,7 +24,7 @@ function createUserIfNonExistent(event) {
   };
 }
 
-export default function(event, ctx, cb) {
+export function getOrCreateUser(event, ctx, cb) {
   try {
     validateInput(event);
     UserModel.query(event.fbId)

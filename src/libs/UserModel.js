@@ -1,7 +1,9 @@
+// Line below needed to work around bug: https://github.com/AnomalyInnovations/serverless-es7/issues/2
+import stub from 'dynogels';
 import Joi from 'joi';
 import dynogels from 'dynogels-promisified';
 
-dynogels.AWS.config.update({region: process.env.AWS_DEFAULT_REGION}); // region must be set
+dynogels.AWS.config.update({region: process.env.AWS_REGION}); // region must be set
 
 const users = dynogels.define('users', {
   tableName: 'users',
