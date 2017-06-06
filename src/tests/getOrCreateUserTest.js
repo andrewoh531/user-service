@@ -2,7 +2,7 @@ import tester from 'lambda-tester';
 import {expect} from 'chai';
 
 import UserModel from '../libs/UserModel';
-import func from '../functions/getOrCreateUser';
+import { getOrCreateUser } from '../functions/getOrCreateUser';
 
 function expectQueryCount(fbId, count) {
   return UserModel
@@ -28,7 +28,7 @@ describe('getOrCreateUser', () => {
   };
 
   it('should error when userId is not provided', () => {
-    return tester(func)
+    return tester(getOrCreateUser)
       .event({})
       .expectError(err => {
         expect(err.message).to.equal('Missing fbId parameter');
@@ -36,7 +36,7 @@ describe('getOrCreateUser', () => {
   });
 
   it('should return error when name not provided', () => {
-    return tester(func)
+    return tester(getOrCreateUser)
       .event({fbId: '1'})
       .expectError(err => {
         expect(err.message).to.equal('Missing name parameter');
@@ -44,7 +44,7 @@ describe('getOrCreateUser', () => {
   });
 
   it('should return error when email not provided', () => {
-    return tester(func)
+    return tester(getOrCreateUser)
       .event({fbId: '1', name: 'ao'})
       .expectError(err => {
         expect(err.message).to.equal('Missing email parameter');
@@ -57,7 +57,7 @@ describe('getOrCreateUser', () => {
 
     expectQueryCount(payload.fbId, 0)
       .then(() => {
-        return tester(func)
+        return tester(getOrCreateUser)
           .event(payload)
           .expectResult(res => {
             expect(res.fbId).to.equal(payload.fbId);
@@ -80,11 +80,11 @@ describe('getOrCreateUser', () => {
       name: 'SecondUser',
       email: 'second@user.com'
     };
-    tester(func)
+    tester(getOrCreateUser)
       .event(payload)
       .expectResult()
       .then(() => {
-        return tester(func)
+        return tester(getOrCreateUser)
           .event(newUser)
           .expectResult(res => {
             expect(res.fbId).to.equal(payload.fbId);
@@ -102,7 +102,7 @@ describe('getOrCreateUser', () => {
   it('should error when trying to save with extra parameters provided', done => {
     const payloadWithExtras = Object.assign({}, payload, {fbId: 'extras', a: 'a', b: 'b', c: 'c'});
 
-    tester(func)
+    tester(getOrCreateUser)
       .event(payloadWithExtras)
       .expectError(err => {
         expect(err.cause.name).to.equal('ValidationError');

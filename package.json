@@ -4,7 +4,7 @@
   "description": "A starter project for the Serverless Framework with ES7 support",
   "main": "handler.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha --recursive ./src/tests/ --compilers js:babel-core/register --opts ./src/tests/mocha.opts"
+    "test": "NODE_ENV=test AWS_REGION=ap-southeast-2 mocha --recursive ./src/tests/ --compilers js:babel-core/register --opts ./src/tests/mocha.opts"
   },
   "author": "",
   "license": "MIT",
