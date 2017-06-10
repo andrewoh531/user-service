@@ -1,0 +1,5 @@
+steps:
+  - label: Build and test :hammer:
+    command:
+    - "yarn install"
+    - "yarn test"
