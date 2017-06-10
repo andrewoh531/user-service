@@ -2,7 +2,7 @@
 AWS Lambda based microservice to manage users. This lambda function simply retrieves an existing user by their Facebook Id or creates a new entry in AWS DynamoDB if the user does not exist.
 
 ## Prerequisites
-When running locally the function expects the `AWS_REGION` environment variable to be set.
+When running locally the function expects the `AWS_DEFAULT_REGION` environment variable to be set.
 
 ## Usage
 To execute the function locally run: `serverless webpack invoke --function getOrCreateUser --path src/tests/sample-payload.json`
