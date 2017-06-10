@@ -1,5 +1,5 @@
 steps:
-  - label: Build and test :hammer:
+  - label: 'Build and test :hammer:'
     command: echo "Hello!"
 
 #steps:
