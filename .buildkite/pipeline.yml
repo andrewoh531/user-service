@@ -1,9 +1,6 @@
 steps:
-  - label: Example Test
-    command: echo "Hello!"
-
-#steps:
-#  - label: Build and test :hammer:
-#    command:
-#      - "yarn install"
-#      - "yarn test"
+  - label: Build and test :hammer:
+    command:
+      - echo "Hello!"
+#      - yarn install
+#      - yarn test
