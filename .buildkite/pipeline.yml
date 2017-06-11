@@ -1,4 +1,4 @@
 steps:
   - label: 'Build and test :hammer:'
     command:
-      - ./test.sh
+      - .buildkite/test.sh
