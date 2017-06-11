@@ -1,0 +1,6 @@
+FROM node:6.11.0-alpine
+
+COPY . ./
+
+RUN yarn install
+

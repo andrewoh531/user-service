@@ -1,0 +1,6 @@
+.buildkite/
+.idea/
+.serverless/
+node_modules/
+
+.envrc*
