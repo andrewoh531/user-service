@@ -3,6 +3,7 @@
 set -e
 working_dir="$( cd "$( dirname "${0}" )/.." && pwd )"
 
+echo "ANDREW_KEY=${ANDREW_KEY}"
 echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
 
 echo "Building user-service:test image"
