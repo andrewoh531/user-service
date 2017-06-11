@@ -3,6 +3,8 @@
 set -e
 working_dir="$( cd "$( dirname "${0}" )/.." && pwd )"
 
+echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+
 echo "Building user-service:test image"
 docker build --tag user-service:test --file .buildkite/node-dockerfile .
 
