@@ -1,6 +1,4 @@
 steps:
   - label: 'Build and test :hammer:'
     command:
-      - echo "Hello!"
-      - yarn install
-#      - yarn test
+      - ./test.sh
