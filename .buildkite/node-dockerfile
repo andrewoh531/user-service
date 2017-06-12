@@ -4,3 +4,5 @@ COPY . ./
 
 RUN yarn install
 
+ENV SERVERLESS serverless@1.15.2
+RUN yarn global add $SERVERLESS
