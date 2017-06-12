@@ -1,0 +1,15 @@
+steps:
+  - label: 'Build :hammer:'
+    command:
+      - docker build --tag user-service:test --file .buildkite/node-dockerfile .
+
+  - wait
+  - label: 'Test'
+    command:
+      - docker run --rm -e AWS_DEFAULT_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY user-service:test yarn test
+
+  - wait
+  - label: 'Deploy to dev (sharonohk) :rocket:'
+    branches: master
+    command:
+      - docker run --rm -e AWS_DEFAULT_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY user-service:test serverless deploy

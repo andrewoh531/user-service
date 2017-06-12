@@ -1,0 +1,4 @@
+FROM andrewoh531/docker-serverless:latest
+
+COPY . ./
+RUN yarn install
