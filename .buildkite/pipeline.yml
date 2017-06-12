@@ -10,6 +10,6 @@ steps:
 
   - wait
   - label: 'Deploy to dev (sharonohk) :rocket:'
-#    branches: master
+    branches: master
     command:
       - docker run --rm -e AWS_DEFAULT_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY user-service:test serverless deploy
