@@ -1,8 +1,4 @@
-FROM node:6.11.0-alpine
+FROM andrewoh531/docker-serverless:latest
 
 COPY . ./
-
 RUN yarn install
-
-ENV SERVERLESS serverless@1.15.2
-RUN yarn global add $SERVERLESS
