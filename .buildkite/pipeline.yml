@@ -1,5 +1,9 @@
 steps:
   - label: 'Build and test :hammer:'
     command:
-      - .buildkite/test.sh
+      - .buildkite/build-and-test.sh
 
+  - label: 'Deploy to dev (sharonohk) :shipit:'
+#    branches: master
+    command:
+      - .buildkite/deploy.sh
