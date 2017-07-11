@@ -2,20 +2,19 @@ import tester from 'lambda-tester';
 import {expect} from 'chai';
 
 import UserModel from '../libs/UserModel';
-import { getOrCreateUser } from '../functions/getOrCreateUser';
+import {getOrCreateUser} from '../functions/getOrCreateUser';
 
-function expectQueryCount(fbId, count) {
-  return UserModel
+async function expectQueryCount(fbId, count) {
+  const res = await UserModel
     .query(fbId)
     .usingIndex('FbIdIndex')
-    .execAsync()
-    .then(res => {
-      expect(res.Count).to.equal(count);
-    });
+    .execAsync();
+
+  expect(res.Count).to.equal(count);
 }
 
-function deleteUser(userId) {
-  return UserModel.destroyAsync(userId);
+async function deleteUser(userId) {
+  return await UserModel.destroyAsync(userId);
 }
 
 describe('getOrCreateUser', () => {
@@ -51,63 +50,60 @@ describe('getOrCreateUser', () => {
       });
   });
 
-  it('should create user if user does not exists', done => {
-
+  it('should create user if user does not exists', async() => {
     let userId = null;
 
-    expectQueryCount(payload.fbId, 0)
-      .then(() => {
-        return tester(getOrCreateUser)
-          .event(payload)
-          .expectResult(res => {
-            expect(res.fbId).to.equal(payload.fbId);
-            expect(res.name).to.equal(payload.name);
-            expect(res.email).to.equal(payload.email);
-            expect(res.userId).to.be.ok;
-            userId = res.userId;
-          })
-      })
-      .then(() => expectQueryCount(payload.fbId, 1))
-      .then(() => deleteUser(userId))
-      .then(done)
-      .catch(done);
+    try {
+      await expectQueryCount(payload.fbId, 0);
+      await tester(getOrCreateUser)
+        .event(payload)
+        .expectResult(res => {
+          expect(res.fbId).to.equal(payload.fbId);
+          expect(res.name).to.equal(payload.name);
+          expect(res.email).to.equal(payload.email);
+          expect(res.userId).to.be.ok;
+          userId = res.userId;
+        });
+      await expectQueryCount(payload.fbId, 1);
+    } finally {
+      await deleteUser(userId);
+    }
   });
 
-  it('should retrieve existing user when user already exist', done => {
+  it('should retrieve existing user when user already exist', async() => {
     let userId = null;
-    const newUser = {
-      fbId,
-      name: 'SecondUser',
-      email: 'second@user.com'
-    };
-    tester(getOrCreateUser)
-      .event(payload)
-      .expectResult()
-      .then(() => {
-        return tester(getOrCreateUser)
-          .event(newUser)
-          .expectResult(res => {
-            expect(res.fbId).to.equal(payload.fbId);
-            expect(res.name).to.equal(payload.name);
-            expect(res.email).to.equal(payload.email);
-            expect(res.userId).to.be.ok;
-            userId = res.userId;
-          });
-      })
-      .then(() => deleteUser(userId))
-      .then(() => done())
-      .catch(done);
+
+    try {
+      const newUser = {
+        fbId,
+        name: 'SecondUser',
+        email: 'second@user.com'
+      };
+      await tester(getOrCreateUser)
+        .event(payload)
+        .expectResult();
+
+      await tester(getOrCreateUser)
+        .event(newUser)
+        .expectResult(res => {
+          expect(res.fbId).to.equal(payload.fbId);
+          expect(res.name).to.equal(payload.name);
+          expect(res.email).to.equal(payload.email);
+          expect(res.userId).to.be.ok;
+          userId = res.userId;
+        });
+    } finally {
+      await deleteUser(userId);
+    }
   });
 
-  it('should error when trying to save with extra parameters provided', done => {
+  it('should error when trying to save with extra parameters provided', async () => {
     const payloadWithExtras = Object.assign({}, payload, {fbId: 'extras', a: 'a', b: 'b', c: 'c'});
 
-    tester(getOrCreateUser)
+    await tester(getOrCreateUser)
       .event(payloadWithExtras)
       .expectError(err => {
         expect(err.cause.name).to.equal('ValidationError');
-        done();
-      })
-      .catch(done);
+      });
   })
 });
