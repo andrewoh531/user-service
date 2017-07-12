@@ -11,31 +11,28 @@ function validateInput(payload) {
   }
 }
 
-function createUserIfNonExistent(event) {
-  return (res) => {
-    if (res.Count < 1) {
-      event.userId = uuid.v4();
-      return UserModel.createAsync(event);
-    } else if (res.Count > 1) {
-      throw new Error(`More than 1 user found for search by FbId`)
-    } else {
-      return res.Items[0];
-    }
-  };
+async function createUserIfNonExistent(event, userQueryResponse) {
+  if (userQueryResponse.Count < 1) {
+    event.userId = uuid.v4();
+    return UserModel.createAsync(event);
+  } else if (userQueryResponse.Count > 1) {
+    throw new Error(`More than 1 user found for search by FbId`)
+  } else {
+    return userQueryResponse.Items[0];
+  }
 }
 
-export function getOrCreateUser(event, ctx, cb) {
+export async function getOrCreateUser(event, ctx, cb) {
   try {
     validateInput(event);
-    UserModel.query(event.fbId)
+
+    const user = await UserModel.query(event.fbId)
       .usingIndex('FbIdIndex')
-      .execAsync()
-      .then(createUserIfNonExistent(event))
-      .then(res => cb(null, JSON.parse(JSON.stringify(res))))
-      .catch(err => {
-        console.error(`Error calling UserModel.getAsync = ${JSON.stringify(err)}`);
-        cb(err);
-      });
+      .execAsync();
+
+    const createUserResponse = await createUserIfNonExistent(event, user);
+    cb(null, JSON.parse(JSON.stringify(createUserResponse)));
+
   } catch (err) {
     cb(err);
   }
